@@ -12,10 +12,21 @@ const AuthContext = createContext();
 export const AuthContextProvider = ({ children }) => {
   const [user, setUser] = useState(null);
 
-  const googleSignIn = () => {
-    const provider = new GoogleAuthProvider();
-    signInWithPopup(auth, provider);
-  };
+  const googleSignIn = async () => {
+  const provider = new GoogleAuthProvider();
+
+  try {
+    await signInWithPopup(auth, provider);
+    console.log("✅ User signed in successfully!");
+  } catch (error) {
+    if (error.code === "auth/popup-closed-by-user") {
+      console.warn("⚠️ User closed the popup before completing sign-in.");
+      // (Optional) show a friendly message in your UI
+    } else {
+      console.error("❌ Sign-in failed:", error);
+    }
+  }
+};
 
   const logOut = () => {
     signOut(auth);
