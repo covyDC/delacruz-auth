@@ -29,6 +29,22 @@ export const AuthContextProvider = ({ children }) => {
   }
 };
 
+
+const facebookSignIn = async () => {
+    const provider = new FacebookAuthProvider();
+
+    try {
+      await signInWithPopup(auth, provider);
+      console.log("✅ Facebook user signed in successfully!");
+    } catch (error) {
+      if (error.code === "auth/popup-closed-by-user") {
+        console.warn("⚠️ Facebook popup closed before sign-in.");
+      } else {
+        console.error("❌ Facebook sign-in failed:", error);
+      }
+    }
+  };
+
   const logOut = () => {
     signOut(auth);
   };
