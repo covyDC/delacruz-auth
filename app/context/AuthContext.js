@@ -4,6 +4,7 @@ import {
   signOut,
   onAuthStateChanged,
   GoogleAuthProvider,
+  FacebookAuthProvider,
 } from "firebase/auth";
 import { auth } from "../firebase";
 
