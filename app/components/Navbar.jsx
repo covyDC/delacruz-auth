@@ -58,48 +58,25 @@ const Navbar = () => {
           )}
         </ul>
 
-        {/* Auth Buttons */}
-        <div className="flex items-center space-x-3">
-          {loading ? null : !user ? (
-            <>
-              <button
-                onClick={handleGoogleSignIn}
-                className="px-4 py-2 bg-white text-red-500 rounded-full shadow-md hover:scale-105 transition-transform duration-300 font-semibold"
-              >
-                Google
-              </button>
-              <button
-                onClick={handleEmailSignIn}
-                className="px-4 py-2 bg-white text-blue-700 rounded-full shadow-md hover:scale-105 transition-transform duration-300 font-semibold"
-              >
-                Email
-              </button>
-              <button
-                onClick={handleGithubSignIn}
-                className="px-4 py-2 bg-white text-gray-900 rounded-full shadow-md hover:scale-105 transition-transform duration-300 font-semibold"
-              >
-                GitHub
-              </button>
-            </>
-          ) : (
-            <div className="flex items-center space-x-4 bg-white rounded-full px-4 py-1 shadow-lg">
-              {user.photoURL && (
-                <img
-                  src={user.photoURL}
-                  alt="avatar"
-                  className="w-8 h-8 rounded-full object-cover"
-                />
-              )}
-              <p className="text-gray-800 font-medium">Hi, {user.displayName || "User"}</p>
-              <button
-                className="px-3 py-1 bg-red-500 text-white rounded-full hover:bg-red-600 transition-colors font-semibold"
-                onClick={handleSignOut}
-              >
-                Sign out
-              </button>
-            </div>
-          )}
-        </div>
+        {/* User Profile (logged in only) */}
+        {!loading && user && (
+          <div className="flex items-center space-x-4 bg-white rounded-full px-4 py-1 shadow-lg">
+            {user.photoURL && (
+              <img
+                src={user.photoURL}
+                alt="avatar"
+                className="w-8 h-8 rounded-full object-cover"
+              />
+            )}
+            <p className="text-gray-800 font-medium">Hi, {user.displayName || "User"}</p>
+            <button
+              className="px-3 py-1 bg-red-500 text-white rounded-full hover:bg-red-600 transition-colors font-semibold"
+              onClick={handleSignOut}
+            >
+              Sign out
+            </button>
+          </div>
+        )}
       </div>
     </nav>
   );
