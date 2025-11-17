@@ -2,26 +2,75 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Blue Theme Variables */
 :root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+  --foreground-rgb: 255, 255, 255; /* White text */
+  --background-start-rgb: 59, 130, 246; /* Blue-500 */
+  --background-end-rgb: 147, 197, 253; /* Blue-300 */
+  --button-bg-rgb: 37, 99, 235; /* Blue-600 for buttons */
+  --button-hover-rgb: 29, 78, 216; /* Blue-700 hover */
+  --card-bg-rgb: 255, 255, 255; /* white cards */
+  --card-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
+    --foreground-rgb: 255, 255, 255; /* White text */
+    --background-start-rgb: 30, 58, 138; /* Blue-900 */
+    --background-end-rgb: 59, 130, 246; /* Blue-500 */
+    --button-bg-rgb: 37, 99, 235; /* Blue-600 for buttons */
+    --button-hover-rgb: 29, 78, 216; /* Blue-700 hover */
+    --card-bg-rgb: 15, 23, 42; /* dark card */
+    --card-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
   }
 }
 
+/* Body Gradient & Typography */
 body {
+  font-family: 'Inter', sans-serif;
   color: rgb(var(--foreground-rgb));
   background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+      180deg,
+      rgb(var(--background-start-rgb)) 0%,
+      rgb(var(--background-end-rgb)) 100%
+    );
+  min-height: 100vh;
+  margin: 0;
+}
+
+/* Buttons */
+button {
+  background-color: rgb(var(--button-bg-rgb));
+  color: rgb(var(--foreground-rgb));
+  font-weight: 600;
+  padding: 0.5rem 1.5rem;
+  border-radius: 0.75rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+button:hover {
+  background-color: rgb(var(--button-hover-rgb));
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Cards / Containers */
+.card {
+  background-color: rgb(var(--card-bg-rgb));
+  border-radius: 1rem;
+  box-shadow: var(--card-shadow);
+  padding: 1.5rem;
+  max-width: 400px;
+  margin: 1rem auto;
+}
+
+/* Centered login container */
+.center-screen {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 80vh;
+  gap: 1rem;
+  flex-direction: column;
 }

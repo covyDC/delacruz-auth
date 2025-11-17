@@ -1,25 +1,30 @@
+"use client";
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { UserAuth } from "../context/AuthContext";
 
 const Navbar = () => {
-  const { user, googleSignIn, logOut } = UserAuth();
+  const { user, googleSignIn, githubSignIn, emailSignIn, logOut } = UserAuth();
   const [loading, setLoading] = useState(true);
 
-  const handleSignIn = async () => {
-    try {
-      await googleSignIn();
-    } catch (error) {
-      console.log(error);
+  const handleGoogleSignIn = async () => {
+    try { await googleSignIn(); } catch (e) { console.log("Google Sign-In Error:", e); }
+  };
+
+  const handleGithubSignIn = async () => {
+    try { await githubSignIn(); } catch (e) { console.log("GitHub Sign-In Error:", e); }
+  };
+
+  const handleEmailSignIn = async () => {
+    const email = prompt("Enter your email:");
+    const password = prompt("Enter your password:");
+    if (email && password) {
+      try { await emailSignIn(email, password); } catch (e) { console.log("Email Sign-In Error:", e); }
     }
   };
 
   const handleSignOut = async () => {
-    try {
-      await logOut();
-    } catch (error) {
-      console.log(error);
-    }
+    try { await logOut(); } catch (e) { console.log("Logout Error:", e); }
   };
 
   useEffect(() => {
@@ -28,43 +33,75 @@ const Navbar = () => {
       setLoading(false);
     };
     checkAuthentication();
-  }, [user]);
+  }, []);
 
   return (
-    <div className="h-20 w-full border-b-2 flex items-center justify-between p-2">
-      <ul className="flex">
-        <li className="p-2 cursor-pointer">
-          <Link href="/">Home</Link>
-        </li>
-        <li className="p-2 cursor-pointer">
-          <Link href="/about">About</Link>
-        </li>
-
-        {!user ? null : (
-          <li className="p-2 cursor-pointer">
-            <Link href="/profile">Profile</Link>
-          </li>
-        )}
-      </ul>
-
-      {loading ? null : !user ? (
-        <ul className="flex">
-          <li onClick={handleSignIn} className="p-2 cursor-pointer">
-            Login
-          </li>
-          <li onClick={handleSignIn} className="p-2 cursor-pointer">
-            Sign up
-          </li>
-        </ul>
-      ) : (
-        <div>
-          <p>Welcome, {user.displayName}</p>
-          <p className="cursor-pointer" onClick={handleSignOut}>
-            Sign out
-          </p>
+    <nav className="w-full shadow-md bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 p-3">
+      <div className="max-w-7xl mx-auto flex items-center justify-between">
+        {/* Logo */}
+        <div className="text-white font-bold text-2xl tracking-wider">
+          <Link href="/">Dela Cruz</Link>
         </div>
-      )}
-    </div>
+
+        {/* Navigation Links */}
+        <ul className="hidden md:flex space-x-6 text-white font-medium">
+          <li className="hover:text-yellow-300 transition-colors duration-300 cursor-pointer">
+            <Link href="/">Home</Link>
+          </li>
+          <li className="hover:text-yellow-300 transition-colors duration-300 cursor-pointer">
+            <Link href="/about">About</Link>
+          </li>
+          {user && (
+            <li className="hover:text-yellow-300 transition-colors duration-300 cursor-pointer">
+              <Link href="/profile">Profile</Link>
+            </li>
+          )}
+        </ul>
+
+        {/* Auth Buttons */}
+        <div className="flex items-center space-x-3">
+          {loading ? null : !user ? (
+            <>
+              <button
+                onClick={handleGoogleSignIn}
+                className="px-4 py-2 bg-white text-red-500 rounded-full shadow-md hover:scale-105 transition-transform duration-300 font-semibold"
+              >
+                Google
+              </button>
+              <button
+                onClick={handleEmailSignIn}
+                className="px-4 py-2 bg-white text-blue-700 rounded-full shadow-md hover:scale-105 transition-transform duration-300 font-semibold"
+              >
+                Email
+              </button>
+              <button
+                onClick={handleGithubSignIn}
+                className="px-4 py-2 bg-white text-gray-900 rounded-full shadow-md hover:scale-105 transition-transform duration-300 font-semibold"
+              >
+                GitHub
+              </button>
+            </>
+          ) : (
+            <div className="flex items-center space-x-4 bg-white rounded-full px-4 py-1 shadow-lg">
+              {user.photoURL && (
+                <img
+                  src={user.photoURL}
+                  alt="avatar"
+                  className="w-8 h-8 rounded-full object-cover"
+                />
+              )}
+              <p className="text-gray-800 font-medium">Hi, {user.displayName || "User"}</p>
+              <button
+                className="px-3 py-1 bg-red-500 text-white rounded-full hover:bg-red-600 transition-colors font-semibold"
+                onClick={handleSignOut}
+              >
+                Sign out
+              </button>
+            </div>
+          )}
+        </div>
+      </div>
+    </nav>
   );
 };
 

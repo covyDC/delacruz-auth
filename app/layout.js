@@ -1,8 +1,7 @@
-"use client";
 import Navbar from "./components/Navbar";
 import "./globals.css";
-import { Inter } from "next/font/google";
 import { AuthContextProvider } from "./context/AuthContext";
+import { Inter } from "next/font/google";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -14,11 +13,14 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className={inter.className}>
-        <AuthContextProvider>
-          <Navbar />
-          {children}
-        </AuthContextProvider>
+      <body>
+        {/* Apply font class to a client-side div */}
+        <div className={inter.className}>
+          <AuthContextProvider>
+            <Navbar />
+            {children}
+          </AuthContextProvider>
+        </div>
       </body>
     </html>
   );
