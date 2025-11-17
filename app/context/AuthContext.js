@@ -41,8 +41,20 @@ export const AuthContextProvider = ({ children }) => {
     try {
       const result = await createUserWithEmailAndPassword(auth, email, password);
       console.log("✅ Email user signed up successfully!", result.user);
+      return result.user;
     } catch (error) {
       console.error("❌ Email sign-up failed:", error);
+      let message = "Sign-up failed";
+      if (error.code === "auth/email-already-in-use") {
+        message = "This email is already registered. Please sign in instead.";
+      } else if (error.code === "auth/weak-password") {
+        message = "Password is too weak. Use at least 6 characters.";
+      } else if (error.code === "auth/invalid-email") {
+        message = "Invalid email address.";
+      } else if (error.code === "auth/operation-not-allowed") {
+        message = "Email/password accounts are not enabled.";
+      }
+      throw new Error(message);
     }
   };
 
@@ -50,8 +62,22 @@ export const AuthContextProvider = ({ children }) => {
     try {
       const result = await signInWithEmailAndPassword(auth, email, password);
       console.log("✅ Email user signed in successfully!", result.user);
+      return result.user;
     } catch (error) {
       console.error("❌ Email sign-in failed:", error);
+      let message = "Sign-in failed";
+      if (error.code === "auth/user-not-found") {
+        message = "No account found with this email. Please sign up first.";
+      } else if (error.code === "auth/wrong-password") {
+        message = "Incorrect password. Please try again.";
+      } else if (error.code === "auth/invalid-email") {
+        message = "Invalid email address.";
+      } else if (error.code === "auth/user-disabled") {
+        message = "This account has been disabled.";
+      } else if (error.code === "auth/too-many-requests") {
+        message = "Too many failed attempts. Please try again later.";
+      }
+      throw new Error(message);
     }
   };
 
